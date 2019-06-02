@@ -9,11 +9,21 @@ import os
 import PIL
 import time
 from PIL import Image
+import sys
 
 from IPython import display
 
+if __name__ == '__main__':
+  fromPath = sys.argv[1]
+  try: 
+    BATCH_SIZE = sys.argv[2]
+    EPOCHS = sys.argv[3]
+  except TypeError:
+    print("Not integers")
+    exit()
+else:
+  exit()
 print('Loading data set...')
-fromPath = './128_128_v02'
 data_dir = os.listdir(fromPath)
 
 train_images = np.array([np.array(Image.open(fromPath + '//' + fname)) for fname in data_dir])
@@ -27,7 +37,6 @@ train_images = (train_images - 127.5) / 127.5 # Normalize the images to [-1, 1]
 print('Normalization complete!')
 
 BUFFER_SIZE = 100000
-BATCH_SIZE = 32
 
 train_dataset = tf.data.Dataset.from_tensor_slices(train_images).shuffle(BUFFER_SIZE).batch(BATCH_SIZE)
 print('Data set is ready!')
@@ -125,7 +134,6 @@ print('checkpoint Loaded!')
 
 #training parameters
 
-EPOCHS = 100
 noise_dim = 100
 num_examples_to_generate = 32
 
@@ -174,20 +182,6 @@ def train(dataset, epochs):
     print_one()
     print ('Time taken for epoch {} is {} sec'.format(epoch + 1,
                                                       time.time()-start))
-
-
-def generate_and_save_images(model, epoch, test_input):
-  predictions = model(test_input, training=False)
-  
-  for i in range(predictions.shape[0]):
-      if i < 16:
-        continue
-      plt.subplot(4, 4, i+1)
-      plt.imshow(predictions[i, :, :, 0] * 127.5 + 127.5, cmap='gray')
-      plt.axis('off')
-        
-  plt.savefig('image_at_epoch_{:04d}.png'.format(epoch))
-  plt.close()
 
 print('Everything is ready to train!')
 train(train_dataset, EPOCHS)
