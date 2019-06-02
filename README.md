@@ -2,6 +2,19 @@
 
 Dessa filer behöver följande moduler för att fungera korrekt, modulerna måste instaleras korrekt också:
 
+tensorflow
+glob
+imageio
+matplotlib
+numpy
+PIL
+scipy
+struct
+wave
+pyaudio
+queue
+threading
+
 
 
 Sytax för demo: 
@@ -15,3 +28,5 @@ input dir ska vara en mapp med wave filer som behöver bli converterade förhål
 Syntax för training:
 *python training.py dataSetDir batchSize nrEpoch*
 dataSetDir är var alla bilder som den ska träna på finns förhållande till denna mappen. batchSize är batchsize. nrEpoch är hur många gåner den ska gå igenom alla bilder, var 10 epoch så sparar den en checkpoint.
+
+Ladda ner checkpoints separat.
